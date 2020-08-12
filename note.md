@@ -51,6 +51,131 @@ public class 构建乘积数组 {
     }
 }
 ```
+### 移动零
+#### 题目描述
+给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。   
 
- 
+示例:   
+输入: [0,1,0,3,12]
+输出: [1,3,12,0,0]  
 
+说明:  
+必须在原数组上操作，不能拷贝额外的数组。
+尽量减少操作次数。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/move-zeroes
+#### 分析  
+解题思路1（对应move方法):   
+遍历a数组，在遍历的过程中统计零的个数，遇到非零的元素，就交换非零元素至
+第一个零元素所在的位置，并将所有的零元素后移，直至遍历数组结束。这种效率不是很高。
+```java
+package easy;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class 移动零 {
+    public void move(int a[]) {//版本一
+        int count = 0;//用于统计零的个数
+        for (int i = 0; i < a.length; i++) {
+            while (i <= a.length - 1 && a[i] == 0) {//目的是找到0后面的非零的元素，存在0后面还是0的情况
+                count++;
+                i++;
+            }
+            if (i == a.length) {//表示已经遍历完了所有元素
+                break;
+            }
+            int noZero = a[i];//交换
+            a[i - count] = noZero;//交换，非零元素前移count位
+            for (int j = i; j > i - count; j--) {//0后面的非零元素前移count位
+                a[j] = 0;//零元素后移
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+//        int a[] = {0,1,0,3,0,0,12,0,3,0};
+//        test st = new test();
+//        st.move(a);
+//        for (int i=0;i<a.length;i++){
+//            System.out.print(a[i]+" ");
+//        }
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> a = new ArrayList<Integer>();
+        while (!scanner.hasNext("-1")) {//键入-1表示输入结束
+            a.add(scanner.nextInt());
+        }
+        int nums[] = new int[a.size()];
+        for (int i = 0; i < a.size(); i++) {
+            nums[i] = a.get(i);
+        }
+        移动零 st = new 移动零();
+        st.move3(nums);
+        for (int i = 0; i < nums.length; i++) {
+            System.out.print(nums[i] + " ");
+        }
+    }
+}
+```
+解题思路2（对应move1方法）:  
+说的是不能复制元素组，但我们可以用一个链表来记录非零元素的下标呀，然后
+在依次根据链表中的下标值重新排序原数组的值。感觉这个和接下来的解题思路3很像，不过
+这里用了个列表，导致运行时间比较长。。。
+```java
+public class 移动零 {
+    public void move1(int a[]) {//版本二
+        List<Integer> b = new ArrayList<Integer>();
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] != 0) {
+                b.add(a[i]);
+            }
+        }
+        for (int j = 0; j < a.length; j++) {
+            if (j < b.size()) {
+                a[j] = b.get(j);
+            } else {
+                a[j] = 0;
+            }
+        }
+    }
+}
+```
+解题思路3(对应move2方法)：  
+使用一个index来统计非零元素的数量，因为在遍历数组的过程中，遍历的i永远大于等于index，因此遇到非零元素
+就可以更新a[index]的值。然后遍历完数组后，将index值之后的数组元素全部置为0即可。
+```java
+public class 移动零 {
+    public void move2(int nums[]) {//版本三
+        int index = 0;
+        for (int num : nums) {//单项指针只会前进，所以不用担心数据会被覆盖
+            if (num != 0) {
+                nums[index++] = num;
+            }
+        }
+        while (index < nums.length) {
+            nums[index++] = 0;
+        }
+    }
+}
+```
+解题思路4(对应move3方法)：  
+move2方法是先找出所有的非零元素，再将剩下的数组元素置为0。
+而move3方法是在找非零元素的同时就将零元素后移,这种办法的好处是数组元素置换的次数小于原数组的长度。有些位置为0的元素甚至不需要移动。
+```java
+public class 移动零 {
+    public void move3(int nums[]) {//版本四
+        int index = 0;
+        for (int i = 0; i < nums.length; i++) {//单项指针只会前进，所以不用担心数据会被覆盖
+            if (nums[i] != 0) {
+                if (i != index) {
+                    nums[index] = nums[i];
+                    nums[i] = 0;
+                }
+                index++;
+            }
+        }
+    }
+}
+```
