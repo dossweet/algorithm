@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83edc118-f028-43a8-9b49-1192f15e2797" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/easy/移动零.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/easy/不用加减乘除做加法.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/note.md" beforeDir="false" afterPath="$PROJECT_DIR$/note.md" afterDir="false" />
     </list>
@@ -71,7 +71,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.移动零">
+  <component name="RunManager">
     <configuration name="构建乘积数组" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="easy.构建乘积数组" />
       <module name="algorithm" />
@@ -98,13 +98,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <list>
-      <item itemvalue="Application.移动零" />
-      <item itemvalue="Application.构建乘积数组" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.移动零" />
         <item itemvalue="Application.构建乘积数组" />
       </list>
     </recent_temporary>

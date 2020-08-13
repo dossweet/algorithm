@@ -179,3 +179,46 @@ public class 移动零 {
     }
 }
 ```
+### 不用加减乘除做加法
+#### 题目描述
+写一个函数，求两个整数之和，要求在函数体内不得使用+、-、*、/四则运算符号。
+来源：  
+牛客网 剑指offer https://www.nowcoder.com/practice/59ac416b4b944300b617d4f7f111b215?tpId=13&&tqId=11201&rp=1&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking
+#### 分析
+题目要求不能使用加减乘除。其实我们之前学习计算机组成原理的时候有学过位运算。  
+位运算就可以实现加减乘除，且效率更高。因为编程中的+-*/的底层其实也是二进制位运算。  
+在位运算中：按位与 对应 &，按位或 对应 |， 按位异或 对应 ^。<<1 表示左移一位，>>1表示右移一位。  
+位运算中的加法=无进位结果和+进位结果  
+无进位结果和=按位异或结果（异或就是相同为0，相异为1）  
+进位结果=按位与结果左移一位
+```
+操作数1    操作数2    &运算     |运算     ^运算
+0           0         0        0          0
+0           1         0        1          1
+1           0         0        1          1
+1           1         1        1          0
+```
+```java
+package easy;
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class 不用加减乘除做加法 {
+     public int Add(int num1,int num2) {
+         int sum = 0;
+         if (num1==0){
+             return  num2;
+         }
+         if (num2==0){
+             return num1;
+         }
+         while (num2!=0){//num2可以理解为进位结果
+             sum = num1^num2;
+             num2 = (num1&num2)<<1;
+             num1=sum;//num1理解为异或结果
+         }
+         return sum;
+    }
+}
+```
