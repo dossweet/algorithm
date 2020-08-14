@@ -222,3 +222,32 @@ public class 不用加减乘除做加法 {
     }
 }
 ```
+### 用两个栈实现队列
+#### 题目描述
+用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型  
+#### 分析
+这篇csdn博客讲得不错
+https://blog.csdn.net/ailunlee/article/details/85100514?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param
+```java
+package easy;
+import java.util.Stack;
+
+public class 用两个栈实现队列 {
+    Stack<Integer> stack1 = new Stack<Integer>();
+    Stack<Integer> stack2 = new Stack<Integer>();
+
+    public void push(int node) {
+        while (!stack2.isEmpty()){
+            stack1.push(stack2.pop());
+        }
+        stack2.push(node);//队列的属性是先进先出。所以当执行push操作时，需要先把前面的元素放进第二个栈中，才能保证node在最后
+    }
+
+    public int pop() {
+        while(!stack1.isEmpty()){
+            stack2.push(stack1.pop());
+        }
+        return stack2.pop();
+    }
+}
+```
