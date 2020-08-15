@@ -257,24 +257,68 @@ public class 不用加减乘除做加法 {
 https://blog.csdn.net/ailunlee/article/details/85100514?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param
 ```java
 package easy;
+
 import java.util.Stack;
 
 public class 用两个栈实现队列 {
     Stack<Integer> stack1 = new Stack<Integer>();
     Stack<Integer> stack2 = new Stack<Integer>();
 
-    public void push(int node) {
-        while (!stack2.isEmpty()){
-            stack1.push(stack2.pop());
-        }
-        stack2.push(node);//队列的属性是先进先出。所以当执行push操作时，需要先把前面的元素放进第二个栈中，才能保证node在最后
+    public void push(int node) {//push操作就是直接往数组里插元素
+        stack1.push(node);
     }
 
     public int pop() {
-        while(!stack1.isEmpty()){
-            stack2.push(stack1.pop());
+        if (stack2.size() <= 0) {
+            while (stack1.isEmpty() == false) {
+                stack2.push(stack1.pop());
+            }
         }
         return stack2.pop();
+    }
+}
+```
+### 变态跳台阶
+#### 题目描述  
+一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。  
+#### 分析
+两种分析：  
+第一种，数学归纳法：  
+当n=1时，只有1种跳法    1,即  2^0  
+当n=2时，有1+1和2+0两种跳法   2，即   2^1  
+当n=3时，有1+1+1,1+2,2+1,3+0四种跳法  4，即 2^2  
+当n=4时，有1+1+1+1,1+2+1,1+1+2,2+1+1,1+3,3+1,2+2,4八种跳法 8,即2^3  
+...
+由此可得，当为n阶台阶时，有2^(n-1)种跳法。  
+
+第二种分析方法：  
+设f[i] 表示 当前跳道第 i 个台阶的方法数。那么f[n]就是所求答案。
+
+假设现在已经跳到了第 n 个台阶，那么前一步可以从哪些台阶到达呢？
+
+如果上一步跳 1 步到达第 n 个台阶，说明上一步在第 n-1 个台阶。已知跳到第n-1个台阶的方法数为f[n-1]  
+如果上一步跳 2 步到达第 n 个台阶，说明上一步在第 n-2 个台阶。已知跳到第n-2个台阶的方法数为f[n-2]  
+...  
+如果上一步跳 n 步到达第 n 个台阶，说明上一步在第 0 个台阶。已知跳到 第0个台阶的方法数为f[0]  
+那么总的方法数就是所有可能的和。也就是f[n] = f[n-1] + f[n-2] + ... + f[0]  
+显然初始条件f[0] = f[1] = 1  
+所以我们就可以先求f[2]，然后f[3]...f[n-1]， 最后得出f[n]  
+此时f[n]=f[n-1]+f[n-2]+...+f[1]+f[0]  
+而f[n-1]=f[n-2]+f[n-3]+...+f[1]+f[0],就是f[n]除去f[n-1]的其他部分，  
+那么f[n]=f[n-1]+f[n-1]=2*f[n-1],这就是递归的式子了。
+```java
+package easy;
+
+public class 变态跳台阶 {
+    public int JumpFloorII(int target) {
+        /*这个题是一个全排列的题*/
+        if(target==1){
+            return 1;
+        }else if(target==2){
+            return 2;
+        }else{
+            return 2*JumpFloorII(target-1);
+        }
     }
 }
 ```
