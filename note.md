@@ -322,3 +322,116 @@ public class 变态跳台阶 {
     }
 }
 ```
+### 数组中出现次数超过一半的数字
+#### 题目描述
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组[1,2,3,2,2,2,5,4,2]。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。你可以假设数组是非空的，并且给定的数组总是存在多数元素。1<=数组长度<=50000
+#### 示例
+示例1
+
+输入   
+[1,2,3,2,2,2,5,4,2]  
+返回值   
+2  
+
+示例2  
+输入  
+[3,3,3,3,2,2,2]  
+返回值  
+3  
+
+示例3  
+输入  
+[1]  
+返回值  
+1  
+#### 分析
+看到这道题，我首先想到的解题思路是拿一个map来存数组元素以及该元素出现的次数。同时在生成hashMap之前，用一个maxCountValue和maxCountKey来分别标记出现次数最多的元素，以及出现了几次。这样在生成hashMap的同时，结果也就出来啦~  
+```java
+public class 数组中出现次数超过一半的数字 {
+    public int MoreThanHalfNum_Solution(int[] array) {
+        HashMap<Integer, Integer> numberArray = new HashMap<Integer, Integer>();
+        int maxCountValue = 1;
+        int maxCountKey = array[0];
+        for (int i = 0; i < array.length; i++) {
+            if (numberArray.containsKey(array[i])) {
+                int count = numberArray.get(array[i]);
+                numberArray.put(array[i], count + 1);
+                if (count + 1 > maxCountValue) {
+                    maxCountValue = count + 1;
+                    maxCountKey = array[i];
+                }
+            } else {
+                numberArray.put(array[i], 1);
+            }
+        }
+        return maxCountKey;
+    }
+}
+```
+这么简单的代码我也不是一次编译成功的。。记录下犯了哪些错：  
+1. 误以为TreeMap是按value的升序来排序的，实际上是按key来排序的
+2. array[i]才是取具体的数字。而我居然将i值直接赋给了maxCountKey。。
+3. 代码容错性没有考虑，应该做个数组判空
+
+算法改进：  
+看到大家在题解里说用map这种方式很简单粗暴，但是效率很低，直接用一层循环就可以搞定  
+改进版01：
+用摩尔投票法来实现，可使时间复杂度为On 空间复杂度为O1.(看评论说这种解法也有局限性)
+```java
+public class Solution {
+    public int MoreThanHalfNum_Solution(int [] array) {
+        if(array==null||array.length==0)return 0;
+        int morgen=0;
+        int vote=0;
+        for(int i=0;i<array.length;i++){
+            if(vote==0){
+                morgen=array[i];
+                vote++;
+            }else{
+                if(array[i]==morgen){
+                    vote++;
+                }else{
+                    vote--;
+                }
+            }
+        }
+        int tmp=0;
+        for(int i=0;i<array.length;i++){
+            if(array[i]==morgen){
+                tmp++;
+            }
+            if(tmp>array.length/2){
+                return morgen;
+            }
+        }
+        return 0;
+    }
+}
+```
+改进版02：用逻辑思维来解（借鉴思维。看评论说这种解法有局限性）
+
+```
+class Solution {
+public:
+    int majorityElement(vector<int> nums) {
+        int count = 0;
+        int win;
+
+        for(int n: nums){
+            if(count == 0){
+                win = n;
+                count = 1;
+            }else{
+                if(win == n){
+                    count++;
+                }
+                else{
+                    count--;
+                }
+            }
+        }
+        return win;
+    }
+};
+```
+
