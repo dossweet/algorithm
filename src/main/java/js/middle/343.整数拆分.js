@@ -13,4 +13,24 @@ var integerBreak = function(n) {
     return dp[n];
 };
 
+// 采用数学方法解整数规划的题
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var integerBreak = function(n) {
+    if( n <= 3){
+        return n - 1;
+    }
+    let quotient = Math.floor(n / 3);
+    let remainder = n % 3;
+    if(remainder === 0){// 代表是3的倍数
+        return Math.pow(3,quotient);
+    }else if(remainder === 1){
+        return Math.pow(3, quotient - 1) * 4;// 把最后一个3变成3+1=4;然后3^(n-1)再乘以最后的4即可
+    }else{
+        return Math.pow(3,quotient) * 2;// 最后的结果就是3的quotient再乘以2
+    }
+};
+
 console.log(integerBreak(3));
