@@ -26,14 +26,14 @@ LRUCache.prototype.get = function (key) {
 }
 
 LRUCache.prototype.put = function (key, value) {
+    // 如果缓存中有这个元素，无论缓存满没满，都需要清掉
     if (this.cache.has(key)) {
         this.cache.delete(key);
     }
-    if (this.cache.size < this.capacity) {
-        this.cache.set(key, value);
-        return;
+    // 清掉后再判断当前缓存满了没有，满了的话就需要把第一个元素，即最久未使用的给清掉，然后加入新的,否则直接加入新的
+    if (this.cache.size >= this.capacity) {
+        this.cache.delete(this.cache.keys().next().value);
     }
-    this.cache.delete(this.cache.keys().next().value);
     this.cache.set(key, value);
     return;
 }
