@@ -47,11 +47,15 @@ function array2Tree(arr) {
     })
     for (let id in temp) {
         let pid = temp[id].parent_id
+        // 如果不存在父节点，就挂载到根元素上
         if (!res[pid]) {
-            res[pid] = {};
-            res[pid].children = {};
+            res[id] = temp[id];
+        }else{
+            if(!res[pid].children){
+                res[pid].children = {};
+            }
+            res[pid].children[id] = temp[id];
         }
-        res[pid].children[id] = temp[id];
     }
     return res;
 }
